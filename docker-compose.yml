@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  dotnet-gateway:
+    image: dotnet-gateway
+    container_name: dotnet-gateway
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8080"
+    networks:
+      - poc-net
+
+  express-service:
+    image: express-service
+    container_name: express-service
+    build:
+      context: ./service
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    networks:
+      - poc-net
+
+networks:
+  poc-net:
