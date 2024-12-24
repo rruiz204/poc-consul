@@ -10,10 +10,22 @@
         }
       ],
       "UpstreamPathTemplate": "/gateway/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1m",
+        "Limit": 10
+      }
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://dotnet-gateway:8080"
+    "BaseUrl": "http://dotnet-gateway:8080",
+    "RateLimitOptions": {
+      "QuotaExceededMessage": "Rate limit exceeded. Try again later.",
+      "ClientIdHeader": "ClientId",
+      "HttpStatusCode": 418
+    }
   }
 }
