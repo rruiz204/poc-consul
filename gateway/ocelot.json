@@ -3,13 +3,11 @@
     {
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "express-service",
-          "Port": 4000
-        }
-      ],
-      "UpstreamPathTemplate": "/gateway/{everything}",
+
+      "ServiceName": "express",
+      "UseServiceDiscovery": true,
+
+      "UpstreamPathTemplate": "/api/express/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
       
       "RateLimitOptions": {
@@ -26,6 +24,11 @@
       "QuotaExceededMessage": "Rate limit exceeded. Try again later.",
       "ClientIdHeader": "ClientId",
       "HttpStatusCode": 418
+    },
+    "ServiceDiscoveryProvider": {
+      "Host": "consul",
+      "Port": 8500,
+      "Type": "Consul"
     }
   }
 }

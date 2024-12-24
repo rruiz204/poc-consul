@@ -1,6 +1,15 @@
 version: "3.8"
 
 services:
+  consul:
+    image: hashicorp/consul:1.20
+    container_name: consul
+    command: agent -dev -ui -client=0.0.0.0
+    ports:
+      - "8500:8500"
+    networks:
+      - poc-net
+
   dotnet-gateway:
     image: dotnet-gateway
     container_name: dotnet-gateway
@@ -9,6 +18,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8080"
+    depends_on:
+      - consul
     networks:
       - poc-net
 
@@ -18,8 +29,15 @@ services:
     build:
       context: ./service
       dockerfile: Dockerfile
+    environment:
+      - EXPRESS_HOST=express-service
+      - EXPRESS_PORT=4000
+      - CONSUL_HOST=consul
+      - CONSUL_PORT=8500
     ports:
       - "4000:4000"
+    depends_on:
+      - dotnet-gateway
     networks:
       - poc-net
 
